@@ -5,7 +5,21 @@ project(Library)
 
 set(SOURCE_FILES
     include/Hotel.h
+    include/Reservation.h
+    include/Reservationable.h
+    include/Room.h
+    include/Bedroom.h
+    include/ConferanceRoom.h
+    include/Storeroom.h
+    include/Payment.h
     src/Hotel.cpp
+    src/Reservation.cpp
+    src/Reservationable.cpp
+    src/Room.cpp
+    src/Bedroom.cpp
+    src/ConferanceRoom.cpp
+    src/Storeroom.cpp
+    src/Payment.cpp
 )
 
 add_library(Library ${SOURCE_FILES})

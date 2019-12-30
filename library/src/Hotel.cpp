@@ -7,7 +7,10 @@ std::string Hotel::GetName(){
     return this->name; 
 }
 
+void Hotel::SetName(std::string newName){
+    this->name = newName;
+}
+
 int Hotel::GetStarsAmount(){
     return this->stars;
 }
-
