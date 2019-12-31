@@ -62,6 +62,10 @@ endif()
 set(SOURCE_TEST_FILES
         test/master.cpp
         test/HotelTest.cpp
+        test/BedroomTest.cpp
+        test/ConferanceRoomTest.cpp
+        test/ReservationTest.cpp
+        test/PaymentTest.cpp
         )
 
 include_directories(

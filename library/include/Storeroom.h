@@ -12,6 +12,7 @@ public:
     float GetOccupied();
     void Load(float stuff);
     void Unload(float stuff);
+    bool IsFull();
 };
 
 #endif

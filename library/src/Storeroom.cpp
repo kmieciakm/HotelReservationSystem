@@ -27,3 +27,7 @@ void Storeroom::Unload(float stuff){
         throw std::out_of_range("No so many stuff in storeroom");
     }
 }
+
+bool Storeroom::IsFull(){
+    return occupied >= capacity;
+}

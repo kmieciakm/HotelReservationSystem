@@ -3,6 +3,6 @@
 
 #include <chrono>
 
-std::tm GetIncreasedDate(std::tm date, int hours, int days, int months, int years);
+std::tm GetIncreasedDate(std::tm date, int hours, int days);
 
 #endif

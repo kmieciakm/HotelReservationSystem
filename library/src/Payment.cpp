@@ -16,7 +16,7 @@ void Payment::SetDeadline(std::tm newDeadline){
     time_t newDeadlineTime = mktime(&newDeadline);
     time_t deadlineTime = mktime(&this->deadline);
 
-    if(deadlineTime < newDeadlineTime)
+    if(newDeadlineTime < deadlineTime)
         throw std::logic_error("Deadline cannot be regress");
     else
         this->deadline = newDeadline;
@@ -30,4 +30,14 @@ bool Payment::HasExpired(){
     time_t currentTime = time(0);
     time_t deadlineTime = mktime(&this->deadline);
     return currentTime > deadlineTime;
+}
+
+void Payment::Pay(float sum){
+    if(this->IsPaidUp()){
+        throw std::logic_error("Already paid");
+    } else if(this->rental - sum >= 0){
+        this->rental -= sum;
+    } else{
+        throw std::logic_error("Too much money");
+    }
 }

@@ -19,8 +19,8 @@ void Bedroom::SetBedsAmount(int newBedsAmount){
 void Bedroom::Reserve(std::tm checkinDate, int period){
     if(period > MAX_RESERVATION_DAYS)
         throw std::logic_error("Too wide reservation period, you can reserve a room up to " + std::to_string(MAX_RESERVATION_DAYS) + " days");
-    
-    std::tm checkoutDate = GetIncreasedDate(checkinDate, 0, period, 0, 0);
+
+    std::tm checkoutDate = GetIncreasedDate(checkinDate, 0, period);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
         std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice());
         this->reservations.push_back( newReservation );

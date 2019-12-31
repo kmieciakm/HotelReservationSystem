@@ -20,7 +20,7 @@ void ConferanceRoom::Reserve(std::tm checkinDate, int period){
     if(period > MAX_RESERVATION_HOURS)
         throw std::logic_error("Too wide reservation period, you can reserve a conferance room up to " + std::to_string(MAX_RESERVATION_HOURS) + " hours");
     
-    std::tm checkoutDate = GetIncreasedDate(checkinDate, period, 0, 0, 0);
+    std::tm checkoutDate = GetIncreasedDate(checkinDate, period, 0);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
         std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice());
         this->reservations.push_back( newReservation );

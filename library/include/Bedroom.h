@@ -1,11 +1,11 @@
 #ifndef BEDROOM_H
 #define BEDROOM_H
 
-#include <Reservationable.h>
+#include "Reservationable.h"
 
 constexpr int MAX_RESERVATION_DAYS = 30;
 
-class Bedroom : public Reservationable{
+class Bedroom : public Reservationable {
 private:
     int bedsAmount;
 public:
@@ -13,7 +13,7 @@ public:
     ~Bedroom() = default;
     int GetBedsAmount();
     void SetBedsAmount(int newBedsAmount);
-    void Reserve(std::tm checkInDate, int period) override;
+    virtual void Reserve(std::tm checkInDate, int period) final;
 };
 
 #endif
