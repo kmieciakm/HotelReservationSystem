@@ -16,6 +16,7 @@ public:
     std::tm GetCheckoutDate();
     void SetCheckoutDate(std::tm newCheckoutDate);
     std::shared_ptr<Payment> GetPayment();
+    bool HasPassed();
 };
 
 #endif

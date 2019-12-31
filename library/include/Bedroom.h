@@ -3,6 +3,8 @@
 
 #include <Reservationable.h>
 
+constexpr int MAX_RESERVATION_DAYS = 30;
+
 class Bedroom : public Reservationable{
 private:
     int bedsAmount;

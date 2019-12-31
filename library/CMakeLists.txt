@@ -12,6 +12,7 @@ set(SOURCE_FILES
     include/ConferanceRoom.h
     include/Storeroom.h
     include/Payment.h
+    include/Functions.h
     src/Hotel.cpp
     src/Reservation.cpp
     src/Reservationable.cpp
@@ -20,6 +21,7 @@ set(SOURCE_FILES
     src/ConferanceRoom.cpp
     src/Storeroom.cpp
     src/Payment.cpp
+    src/Functions.cpp
 )
 
 add_library(Library ${SOURCE_FILES})

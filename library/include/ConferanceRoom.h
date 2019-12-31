@@ -3,6 +3,8 @@
 
 #include <Reservationable.h>
 
+constexpr int MAX_RESERVATION_HOURS = 12;
+
 class ConferanceRoom : public Reservationable {
 private:
     int capacity;

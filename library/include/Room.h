@@ -4,7 +4,7 @@
 #include <string>
 
 class Room {
-private:
+protected:
     std::string name;
     float area;
 public:
