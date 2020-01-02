@@ -39,6 +39,10 @@ std::shared_ptr<Reservation> Reservationable::GetReservation(int id){
     return this->reservations.at(id);
 };
 
+std::vector<std::shared_ptr<Reservation>> Reservationable::GetReservations(){
+    return this->reservations;
+}
+
 int Reservationable::GetReservationsAmount(){
     return this->reservations.size();
 };

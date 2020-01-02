@@ -19,6 +19,7 @@ public:
     int GetStarsAmount();
     void AddRoom(std::shared_ptr<Room> room);
     std::shared_ptr<Room> GetRoom(int roomId);
+    std::vector<std::shared_ptr<Room>> GetRooms();
     int GetRoomsAmount(); 
 };
 

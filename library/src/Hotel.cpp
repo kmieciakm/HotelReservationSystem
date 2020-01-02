@@ -25,6 +25,10 @@ std::shared_ptr<Room> Hotel::GetRoom(int roomId){
     return this->rooms.at(roomId);
 }
 
+std::vector<std::shared_ptr<Room>> Hotel::GetRooms(){
+    return this->rooms;
+}
+
 int Hotel::GetRoomsAmount(){
     return this->rooms.size();
 }

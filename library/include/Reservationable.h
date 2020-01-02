@@ -17,6 +17,7 @@ public:
     float GetPrice();
     void SetPrice(float newPrice);
     std::shared_ptr<Reservation> GetReservation(int id);
+    std::vector<std::shared_ptr<Reservation>> GetReservations();
     int GetReservationsAmount();
     virtual void Reserve(std::tm checkInDate, int period) = 0;
     bool IsFreeInTerm(std::tm start, std::tm end);

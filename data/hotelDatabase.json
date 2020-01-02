@@ -1,0 +1,16 @@
+{
+    "hotel": {
+        "name": "Hilton",
+        "stars": 5,
+		"rooms": [
+            {
+                "roomName": "BlackAndWhite",
+                "roomArea": 120.0
+            },
+            {
+                "roomName": "BlackRedWhite",
+                "roomArea": 150.0
+            }
+        ]
+    }
+}
