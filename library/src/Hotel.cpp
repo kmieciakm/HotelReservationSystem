@@ -14,3 +14,17 @@ void Hotel::SetName(std::string newName){
 int Hotel::GetStarsAmount(){
     return this->stars;
 }
+
+void Hotel::AddRoom(std::shared_ptr<Room> room){
+    this->rooms.push_back(room);
+}
+
+std::shared_ptr<Room> Hotel::GetRoom(int roomId){
+    if(roomId >= this->rooms.size() || roomId < 0)
+        throw std::out_of_range("Bad room id");
+    return this->rooms.at(roomId);
+}
+
+int Hotel::GetRoomsAmount(){
+    return this->rooms.size();
+}

@@ -34,9 +34,9 @@ bool Reservationable::IsFreeInTerm(std::tm start, std::tm end){
 }
 
 std::shared_ptr<Reservation> Reservationable::GetReservation(int id){
-    if(id - 1 > this->reservations.size() || id < 0)
+    if(id >= this->reservations.size() || id < 0)
         throw std::out_of_range("Bad reservation id");
-    return this->reservations.at(id - 1);
+    return this->reservations.at(id);
 };
 
 int Reservationable::GetReservationsAmount(){

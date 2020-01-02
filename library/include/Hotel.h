@@ -17,6 +17,9 @@ public:
     std::string GetName();
     void SetName(std::string newName);
     int GetStarsAmount();
+    void AddRoom(std::shared_ptr<Room> room);
+    std::shared_ptr<Room> GetRoom(int roomId);
+    int GetRoomsAmount(); 
 };
 
 #endif

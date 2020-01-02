@@ -11,7 +11,7 @@ int main() {
         std::cout << "*";
     std::cout << ")" << std::endl;
 
-    Bedroom bedroom("KillYourself", 20, 20, 1);
+    Bedroom bedroom("Badroom", 20, 20, 1);
     std::tm arrival = {0 ,0 ,10, 5, 0, 200};
     bedroom.Reserve(arrival, 30);
     std::cout << "Reservation Amount: " << bedroom.GetReservationsAmount() << std::endl;

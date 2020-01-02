@@ -66,6 +66,8 @@ set(SOURCE_TEST_FILES
         test/ConferanceRoomTest.cpp
         test/ReservationTest.cpp
         test/PaymentTest.cpp
+        test/RoomTest.cpp
+        test/StoreroomTest.cpp
         )
 
 include_directories(
