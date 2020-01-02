@@ -9,14 +9,14 @@ BOOST_AUTO_TEST_CASE(ConferanceRoomConstructor_InitialValues_AllCorrect) {
     BOOST_REQUIRE_EQUAL(conferanceRoom.GetName(), "CorpoOne");
     BOOST_REQUIRE_EQUAL(conferanceRoom.GetArea(), 100);
     BOOST_REQUIRE_EQUAL(conferanceRoom.GetPrice(), 10);
-    BOOST_REQUIRE_EQUAL(conferanceRoom.GetCapacity(), 32);
+    BOOST_REQUIRE_EQUAL(conferanceRoom.GetChairsAmount(), 32);
     BOOST_REQUIRE_EQUAL(conferanceRoom.GetReservationsAmount(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(ConferanceRoom_SettingBedsAmountToFour_GetBedsReturnValueCorrect) {
     ConferanceRoom ConferanceRoom("CorpoOne", 100, 10, 32);
-    ConferanceRoom.SetCapacity(40);
-    BOOST_REQUIRE_EQUAL(ConferanceRoom.GetCapacity(), 40);
+    ConferanceRoom.SetChairsAmount(40);
+    BOOST_REQUIRE_EQUAL(ConferanceRoom.GetChairsAmount(), 40);
 }
 
 BOOST_AUTO_TEST_CASE(ConferanceRoom_ReservingRoom_NewReservationInVariable) {

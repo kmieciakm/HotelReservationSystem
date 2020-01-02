@@ -22,7 +22,7 @@ void Bedroom::Reserve(std::tm checkinDate, int period){
 
     std::tm checkoutDate = GetIncreasedDate(checkinDate, 0, period);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
-        std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice());
+        std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice() * period);
         this->reservations.push_back( newReservation );
     }else{
         throw std::logic_error("Room already booked in this term");

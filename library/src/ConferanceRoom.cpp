@@ -2,16 +2,16 @@
 #include "Functions.h" 
 #include <stdexcept>
 
-ConferanceRoom::ConferanceRoom(std::string _name, float _area, float _price, int _capacity)
-: Reservationable(_name, _area, _price), capacity(_capacity) {}
+ConferanceRoom::ConferanceRoom(std::string _name, float _area, float _price, int _chairs)
+: Reservationable(_name, _area, _price), chairsAmount(_chairs) {}
 
-int ConferanceRoom::GetCapacity(){
-    return this->capacity;
+int ConferanceRoom::GetChairsAmount(){
+    return this->chairsAmount;
 }
 
-void ConferanceRoom::SetCapacity(int newCapacity){
-    if(newCapacity > 0)
-        this->capacity = newCapacity;
+void ConferanceRoom::SetChairsAmount(int newChairsAmount){
+    if(newChairsAmount > 0)
+        this->chairsAmount = newChairsAmount;
     else
         throw std::out_of_range("Unexcepted non-positive capacity");
 }
@@ -22,7 +22,7 @@ void ConferanceRoom::Reserve(std::tm checkinDate, int period){
     
     std::tm checkoutDate = GetIncreasedDate(checkinDate, period, 0);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
-        std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice());
+        std::shared_ptr<Reservation> newReservation = std::make_shared<Reservation>(checkinDate, checkoutDate, this->GetPrice() * period);
         this->reservations.push_back( newReservation );
     }else{
         throw std::logic_error("Conferance room already booked in those hours");

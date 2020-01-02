@@ -8,7 +8,8 @@ private:
     float capacity;
     float occupied;
 public:
-    Storeroom(std::string _name, int _area, float _capacity);
+    Storeroom(std::string _name, float _area, float _capacity);
+    Storeroom(std::string _name, float _area, float _capacity, float _occupied);
     ~Storeroom() = default;
     float GetCapacity();
     float GetOccupied();

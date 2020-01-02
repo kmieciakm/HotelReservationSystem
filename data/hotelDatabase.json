@@ -2,14 +2,44 @@
     "hotel": {
         "name": "Hilton",
         "stars": 5,
-		"rooms": [
+		"bedrooms": [
             {
-                "roomName": "BlackAndWhite",
-                "roomArea": 120.0
+                "name": "BlackAndWhite",
+                "area": 120.0,
+                "price": 130.0,
+                "bedsAmount": 4,
+                "reservations": [
+                    {
+                        "checkin": 1586077200,
+                        "checkout": 1586163600,
+                        "payment": {
+                            "rental": 900.0,
+                            "deadline": 1586163600
+                        }
+                    }
+                ]
             },
             {
-                "roomName": "BlackRedWhite",
-                "roomArea": 150.0
+                "name": "BlackRedWhite",
+                "area": 60.0,
+                "price": 40.0,
+                "bedsAmount": 2
+            }
+        ],
+        "conferanceRooms": [
+            {
+                "name": "CorpoOne",
+                "area": 150.0,
+                "price": 15.0,
+                "capacity": 40
+            }
+        ],
+        "storerooms": [
+            {
+                "name": "UnderStairs",
+                "area": 30.0,
+                "capacity": 60.0,
+                "occupied": 40.0
             }
         ]
     }

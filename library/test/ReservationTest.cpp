@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(ReservationSuiteCorrect)
 BOOST_AUTO_TEST_CASE(ReservationConstructor_InitialValues_AllCorrect) {
     std::tm arrival = {0, 0, 10, 12, 0, 120};
     std::tm departure = {0, 0, 10, 14, 0, 120};
-    Reservation reservation(arrival, departure, 50);
+    Reservation reservation(arrival, departure, 50, arrival);
     BOOST_REQUIRE_EQUAL(reservation.GetCheckinDate().tm_mday, arrival.tm_mday);
     BOOST_REQUIRE_EQUAL(reservation.GetCheckoutDate().tm_mday, departure.tm_mday);
     BOOST_REQUIRE(reservation.GetPayment());

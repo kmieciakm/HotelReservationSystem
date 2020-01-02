@@ -13,6 +13,7 @@ set(SOURCE_FILES
     include/Storeroom.h
     include/Payment.h
     include/Functions.h
+    include/DatabaseSystem.h
     src/Hotel.cpp
     src/Reservation.cpp
     src/Reservationable.cpp
@@ -22,6 +23,7 @@ set(SOURCE_FILES
     src/Storeroom.cpp
     src/Payment.cpp
     src/Functions.cpp
+    src/DatabaseSystem.cpp
 )
 
 add_library(Library ${SOURCE_FILES})
@@ -66,8 +68,8 @@ set(SOURCE_TEST_FILES
         test/ConferanceRoomTest.cpp
         test/ReservationTest.cpp
         test/PaymentTest.cpp
-        test/RoomTest.cpp
         test/StoreroomTest.cpp
+        test/RoomTest.cpp
         )
 
 include_directories(

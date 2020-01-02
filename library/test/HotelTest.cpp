@@ -18,20 +18,18 @@ BOOST_AUTO_TEST_CASE(Hotel_SetName_RenameCorrectly) {
 
 BOOST_AUTO_TEST_CASE(Hotel_AddRoom_RoomAdded) {
     Hotel hotel("Grand", 5);
-    std::shared_ptr<Room> room = std::make_shared<Room>("BlackAndWhite", 50);
-    hotel.AddRoom(room);
-    BOOST_REQUIRE_EQUAL(hotel.GetRoom(0)->GetName(), "BlackAndWhite");
+    std::shared_ptr<Bedroom> room = std::make_shared<Bedroom>("BlackAndWhite", 50.0, 30.0, 2);
+    hotel.AddBedroom(room);
+    BOOST_REQUIRE_EQUAL(hotel.GetBedroom(0)->GetName(), "BlackAndWhite");
 }
 
-BOOST_AUTO_TEST_CASE(Hotel_AddThreeRooms_RoomsAmountCorrect) {
+BOOST_AUTO_TEST_CASE(Hotel_AddTwoRooms_RoomsAmountCorrect) {
     Hotel hotel("Grand", 5);
-    std::shared_ptr<Room> roomOne = std::make_shared<Room>("BlackAndWhite", 50);
-    std::shared_ptr<Room> roomTwo = std::make_shared<Room>("RedGreenBlue", 60);
-    std::shared_ptr<Room> roomThree = std::make_shared<Room>("BlackRedWhite", 150);
-    hotel.AddRoom(roomOne);
-    hotel.AddRoom(roomTwo);
-    hotel.AddRoom(roomThree);
-    BOOST_REQUIRE_EQUAL(hotel.GetRoomsAmount(), 3);
+    std::shared_ptr<Bedroom> roomOne = std::make_shared<Bedroom>("BlackAndWhite", 50.0, 30.0, 2);
+    std::shared_ptr<Bedroom> roomTwo = std::make_shared<Bedroom>("RedGreenBlue", 60.0, 20.0, 4);
+    hotel.AddBedroom(roomOne);
+    hotel.AddBedroom(roomTwo);
+    BOOST_REQUIRE_EQUAL(hotel.GetBedroomsAmount(), 2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

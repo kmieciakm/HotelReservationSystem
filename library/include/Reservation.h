@@ -11,6 +11,7 @@ private:
     std::shared_ptr<Payment> payment;
 public:
     Reservation(std::tm _checkin, std::tm _checkout, float _price);
+    Reservation(std::tm _checkin, std::tm _checkout, float _price, std::tm _deadline);
     ~Reservation() = default;
     std::tm GetCheckinDate();
     std::tm GetCheckoutDate();

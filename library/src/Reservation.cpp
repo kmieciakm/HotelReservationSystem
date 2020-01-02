@@ -2,8 +2,13 @@
 #include <stdexcept>
 
 Reservation::Reservation(std::tm _checkin, std::tm _checkout, float _price)
-: checkinDate(_checkin), checkoutDate(_checkout) {
+: checkinDate(_checkin), checkoutDate(_checkout){
     this->payment = std::make_shared<Payment>(_price, _checkout);
+}
+
+Reservation::Reservation(std::tm _checkin, std::tm _checkout, float _price, std::tm _deadline)
+: checkinDate(_checkin), checkoutDate(_checkout){
+    this->payment = std::make_shared<Payment>(_price, _deadline);
 }
 
 std::tm Reservation::GetCheckinDate(){

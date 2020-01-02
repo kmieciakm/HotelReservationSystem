@@ -1,8 +1,11 @@
 #include "Storeroom.h"
 #include <stdexcept>
 
-Storeroom::Storeroom(std::string _name, int _area, float _capacity) 
+Storeroom::Storeroom(std::string _name, float _area, float _capacity) 
 : Room(_name, _area), capacity(_capacity), occupied(0.0) {}
+
+Storeroom::Storeroom(std::string _name, float _area, float _capacity, float _occupied) 
+: Room(_name, _area), capacity(_capacity), occupied(_occupied) {}
 
 float Storeroom::GetCapacity(){
     return this->capacity; 

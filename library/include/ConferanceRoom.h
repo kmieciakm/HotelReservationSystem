@@ -7,12 +7,12 @@ constexpr int MAX_RESERVATION_HOURS = 12;
 
 class ConferanceRoom : public Reservationable {
 private:
-    int capacity;
+    int chairsAmount;
 public:
-    ConferanceRoom(std::string _name, float _area, float _price, int _capacity);
+    ConferanceRoom(std::string _name, float _area, float _price, int _chairs);
     ~ConferanceRoom() = default;
-    int GetCapacity();
-    void SetCapacity(int newCapacity);
+    int GetChairsAmount();
+    void SetChairsAmount(int newChairsAmount);
     virtual void Reserve(std::tm checkInDate, int period) override;
 };
 
