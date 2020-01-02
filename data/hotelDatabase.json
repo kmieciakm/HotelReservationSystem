@@ -23,7 +23,8 @@
                 "name": "BlackRedWhite",
                 "area": 60.0,
                 "price": 40.0,
-                "bedsAmount": 2
+                "bedsAmount": 2,
+                "reservations": null
             }
         ],
         "conferanceRooms": [
@@ -31,7 +32,8 @@
                 "name": "CorpoOne",
                 "area": 150.0,
                 "price": 15.0,
-                "capacity": 40
+                "chairsAmount": 40,
+                "reservations": null
             }
         ],
         "storerooms": [

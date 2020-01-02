@@ -27,7 +27,12 @@ int main() {
     std::tm meetingDate = {0 ,0 ,12, 5, 3, 120};
     conferanceRoom2->Reserve(meetingDate, 4);
     db.UpdateDatabase();
-    
+
+    DatabaseSystem dbHilton("hotelDatabase.json");
+    std::shared_ptr<Hotel> hiltonHotel = dbHilton.GetHotelFromDatabase();
+    dbHilton.SetPath("output.json");
+    dbHilton.UpdateDatabase();
+
     std::cout << std::endl;
     return 0;
 }

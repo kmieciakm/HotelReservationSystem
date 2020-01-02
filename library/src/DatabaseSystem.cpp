@@ -1,11 +1,16 @@
 #include "DatabaseSystem.h"
 #include "json.hpp"
+#include "stdexcept"
 #include <fstream>
 
 DatabaseSystem::DatabaseSystem(std::shared_ptr<Hotel> _hotel, std::string _path)
 : hotel(_hotel), databaseFilename(_path) {}
 
-std::shared_ptr<Hotel> DatabaseSystem::GetHotel(){
+DatabaseSystem::DatabaseSystem(std::string _path)
+: hotel(nullptr), databaseFilename(_path) {}
+
+std::shared_ptr<Hotel> DatabaseSystem::GetHotelFromDatabase(){
+    Read();
     return this->hotel;
 }
 
@@ -14,28 +19,32 @@ void DatabaseSystem::SetPath(std::string newPath){
 }
 
 void DatabaseSystem::Read(){
-    // std::fstream databaseFile;
-    // std::string databasePath = "../../data/hotelDatabase.json";
-    
-    // databaseFile.open(databasePath, std::fstream::in);
-    // if( databaseFile.good() == true ){
-    //     json db;
-    //     databaseFile >> db;
-
-    //     Hotel hotel(db["hotel"]["name"], db["hotel"]["stars"]);
-    //     for(auto room : db["hotel"]["rooms"]){
-    //         std::shared_ptr<Bedroom> roomObj = std::make_shared<Bedroom>(room["roomName"], room["roomArea"], room["roomPrice"], room["roomBeds"]);
-    //         hotel.AddBedroom(roomObj);
-    //     }
-    //     std::cout << hotel.GetName() << " (" << hotel.GetStarsAmount() << ")" << std::endl;
-    //     std::cout << "Rooms Amount: " << hotel.GetBedroomsAmount() << std::endl;
-    //     for(auto room : hotel.GetBedrooms()){
-    //         std::cout << "Room " << room->GetName() << " have the area " << room->GetArea() << std::endl;
-    //     }
-    // } else {
-    //     std::cout << std::endl << "Cannot find data file! ( " << databasePath << " )" << std::endl;
-    // }
-    // databaseFile.close();
+    std::fstream databaseFile;
+    databaseFile.open("../../data/" + this->databaseFilename, std::fstream::in);
+    if( databaseFile.good() == true ){
+        nlohmann::json db;
+        databaseFile >> db;
+        this->hotel = std::make_shared<Hotel>(db["hotel"]["name"], db["hotel"]["stars"]);
+        for(auto room : db["hotel"]["bedrooms"]){
+            std::shared_ptr<Bedroom> roomObj = std::make_shared<Bedroom>(room["name"], room["area"], room["price"], room["bedsAmount"]);
+            if(!room["reservations"].is_null())
+                roomObj->SetReservations(GetDeserializedReservations(room["reservations"]));
+            hotel->AddBedroom(roomObj);
+        }
+        for(auto room : db["hotel"]["conferanceRooms"]){
+            std::shared_ptr<ConferanceRoom> roomObj = std::make_shared<ConferanceRoom>(room["name"], room["area"], room["price"], room["chairsAmount"]);
+            if(!room["reservations"].is_null())
+                roomObj->SetReservations(GetDeserializedReservations(room["reservations"]));
+            hotel->AddConferanceRoom(roomObj);
+        }
+        for(auto room : db["hotel"]["storerooms"]){
+            std::shared_ptr<Storeroom> roomObj = std::make_shared<Storeroom>(room["name"], room["area"], room["capacity"], room["occupied"]);
+            hotel->AddStoreroom(roomObj);
+        }
+    } else {
+        throw std::invalid_argument("File " + this->databaseFilename + " not found");
+    }
+    databaseFile.close();
 }
 
 void DatabaseSystem::UpdateDatabase(){
@@ -48,7 +57,7 @@ void DatabaseSystem::UpdateDatabase(){
         newBedroom["area"] = bedroom->GetArea();
         newBedroom["price"] = bedroom->GetPrice();
         newBedroom["bedsAmount"] = bedroom->GetBedsAmount();
-        nlohmann::json reservations = this->GetParsedReservations(bedroom->GetReservations());
+        nlohmann::json reservations = this->GetSerializedReservations(bedroom->GetReservations());
         newBedroom["reservations"] = reservations;
         db["hotel"]["bedrooms"].push_back(newBedroom);
     }
@@ -58,7 +67,7 @@ void DatabaseSystem::UpdateDatabase(){
         newConferanceRoom["area"] = conferanceRoom->GetArea();
         newConferanceRoom["price"] = conferanceRoom->GetPrice();
         newConferanceRoom["chairsAmount"] = conferanceRoom->GetChairsAmount();
-        nlohmann::json reservations = this->GetParsedReservations(conferanceRoom->GetReservations());
+        nlohmann::json reservations = this->GetSerializedReservations(conferanceRoom->GetReservations());
         newConferanceRoom["reservations"] = reservations;
         db["hotel"]["conferanceRooms"].push_back(newConferanceRoom);
     }
@@ -70,23 +79,41 @@ void DatabaseSystem::UpdateDatabase(){
         newStoreRoom["occupied"] = storeRoom->GetOccupied();
         db["hotel"]["storerooms"].push_back(newStoreRoom);
     }
-    std::fstream databaseFileSave;
-    databaseFileSave.open("../../data/" + this->databaseFilename, std::fstream::out);
-    databaseFileSave << db << std::endl;
+    std::fstream databaseFile;
+    databaseFile.open("../../data/" + this->databaseFilename, std::fstream::out);
+    databaseFile << db << std::endl;
+    databaseFile.close();
 }
 
-nlohmann::json DatabaseSystem::GetParsedReservations(std::vector<std::shared_ptr<Reservation>> reservations){
+nlohmann::json DatabaseSystem::GetSerializedReservations(std::vector<std::shared_ptr<Reservation>> reservations){
     nlohmann::json newReservation;
     nlohmann::json parsedReservations;
     for(auto reservation : reservations){
-        tm checkinTime = reservation->GetCheckinDate();
-        tm checkoutTime = reservation->GetCheckoutDate();
-        tm deadlineTime = reservation->GetPayment()->GetDeadline();
-        newReservation["checkin"] = mktime(&checkinTime);
-        newReservation["checkout"] = mktime(&checkoutTime);
+        tm checkinDate = reservation->GetCheckinDate();
+        tm checkoutDate = reservation->GetCheckoutDate();
+        tm deadlineDate = reservation->GetPayment()->GetDeadline();
+        newReservation["checkin"] = mktime(&checkinDate);
+        newReservation["checkout"] = mktime(&checkoutDate);
         newReservation["payment"]["rental"] = reservation->GetPayment()->GetRental();
-        newReservation["payment"]["deadline"] = mktime(&deadlineTime);
+        newReservation["payment"]["deadline"] = mktime(&deadlineDate);
         parsedReservations.push_back(newReservation);
     }
     return parsedReservations;
+}
+
+std::vector<std::shared_ptr<Reservation>> DatabaseSystem::GetDeserializedReservations(nlohmann::json reservationsJson){
+    std::shared_ptr<Reservation> newReservation;
+    std::vector<std::shared_ptr<Reservation>> reservations;
+    for(auto reservation : reservationsJson){
+        time_t checkinDate = reservation["checkin"];
+        tm checkinTime = *localtime(&checkinDate);
+        time_t checkoutDate = reservation["checkout"];
+        tm checkoutTime = *localtime(&checkoutDate);
+        float rental = reservation["payment"]["rental"];
+        time_t deadlineDate = reservation["payment"]["deadline"];
+        tm deadlineTime = *localtime(&deadlineDate);
+        newReservation = std::make_shared<Reservation>(checkinTime, checkoutTime, rental, deadlineTime);
+        reservations.push_back(newReservation);
+    }
+    return reservations;
 }

@@ -18,8 +18,10 @@ private:
     std::vector<std::shared_ptr<Storeroom>> storeRooms;
 public:
     Hotel(std::string _name, int _stars);
+    Hotel();
     ~Hotel() = default;
     void SetName(std::string newName);
+    void SetStarsAmount(int stars);
     std::string GetName();
     int GetStarsAmount();
     void AddConferanceRoom(std::shared_ptr<ConferanceRoom> conferanceroom);

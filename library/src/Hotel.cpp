@@ -3,6 +3,9 @@
 Hotel::Hotel(std::string _name, int _stars) 
 : name(_name), stars(_stars) {}
 
+Hotel::Hotel() 
+: name("SampleHotel"), stars(-1) {}
+
 std::string Hotel::GetName(){
     return this->name; 
 }
@@ -10,6 +13,13 @@ std::string Hotel::GetName(){
 void Hotel::SetName(std::string newName){
     this->name = newName;
 }
+
+void Hotel::SetStarsAmount(int stars){
+    if(stars >= 0 && stars <= 5)
+        this->stars = stars;
+    else
+        throw std::out_of_range("Unexpected stars amount");    
+};
 
 int Hotel::GetStarsAmount(){
     return this->stars;

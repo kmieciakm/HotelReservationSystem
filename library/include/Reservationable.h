@@ -16,6 +16,7 @@ public:
     ~Reservationable() = default;
     float GetPrice();
     void SetPrice(float newPrice);
+    void SetReservations(std::vector<std::shared_ptr<Reservation>> reservations);
     std::shared_ptr<Reservation> GetReservation(int id);
     std::vector<std::shared_ptr<Reservation>> GetReservations();
     int GetReservationsAmount();

@@ -15,6 +15,10 @@ void Reservationable::SetPrice(float newPrice){
         throw std::out_of_range("Unexcepted non-positive price");
 }
 
+void Reservationable::SetReservations(std::vector<std::shared_ptr<Reservation>> reservations){
+    this->reservations = reservations;
+}
+
 bool Reservationable::IsFreeInTerm(std::tm start, std::tm end){
     time_t startTime = mktime(&start);
     time_t endTime = mktime(&end);
