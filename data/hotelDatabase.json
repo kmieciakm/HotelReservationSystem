@@ -12,9 +12,19 @@
                     {
                         "checkin": 1586077200,
                         "checkout": 1586163600,
+                        "id": "b0001",
                         "payment": {
                             "rental": 900.0,
                             "deadline": 1586163600
+                        }
+                    },
+                    {
+                        "checkin": 1486163600,
+                        "checkout": 1486163600,
+                        "id": "b0991",
+                        "payment": {
+                            "rental": 900.0,
+                            "deadline": 1486163600
                         }
                     }
                 ]
@@ -24,15 +34,49 @@
                 "area": 60.0,
                 "price": 40.0,
                 "bedsAmount": 2,
+                "reservations": [ 
+                    {
+                        "checkin": 1586077200,
+                        "checkout": 1586509200,
+                        "id": "b0002",
+                        "payment": {
+                            "deadline": 1586509200,
+                            "rental": 200.0
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "RedGreenBlue",
+                "area": 20.0,
+                "price": 20.0,
+                "bedsAmount": 1,
                 "reservations": null
             }
         ],
         "conferanceRooms": [
             {
                 "name": "CorpoOne",
-                "area": 150.0,
-                "price": 15.0,
+                "area": 200.0,
+                "price": 50.0,
                 "chairsAmount": 40,
+                "reservations": [
+                    {
+                        "checkin": 1586077200,
+                        "checkout": 1586095200,
+                        "id": "c001",
+                        "payment": {
+                            "rental": 250.0,
+                            "deadline": 1586181600
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "CorpoTwo",
+                "area": 300.0,
+                "price": 80.0,
+                "chairsAmount": 60,
                 "reservations": null
             }
         ],

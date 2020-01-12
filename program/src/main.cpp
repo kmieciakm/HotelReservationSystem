@@ -39,7 +39,18 @@ int main() {
     hotelController->SetView(hotelView);
     hotelView->SetController(hotelController);
 
+    hotelView->DisplayMainPage();
+    hotelView->DisplayAllRooms();
     hotelView->DisplayAllReservations();
+    hotelView->DisplayOverdueReservations();
+    hotelView->DisplayAllBedrooms();
+    hotelView->DisplayBedroomsUpTo(100.00);
+
+    std::tm start = {0 ,0 ,10, 5, 3, 120};
+    std::tm end = {0 ,0 ,10, 7, 3, 120};
+    hotelView->DisplayFreeBedroomsAt(start, end);
+    hotelView->DisplayFreeConferanceRoomsAt(start, end);
+    hotelView->DisplayErrorMessage("Everything is all right ;)");
 
     dbHilton->SetPath("output.json");
     dbHilton->UpdateDatabase();

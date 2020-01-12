@@ -18,8 +18,19 @@ public:
     HotelView() = default;
     ~HotelView() = default;
     void SetController(std::shared_ptr<HotelController> controller);
+    void DisplayErrorMessage(std::string error);
+    void DisplayMainPage();
     void DisplayAllReservations();
+    void DisplayOverdueReservations();
     void DisplayReservationInfo(fort::char_table& table, std::string id, std::string start, std::string finish, std::string toPay, std::string paymentDeadline);
+    void DisplayAllRooms();
+    void DisplayRoomInfo(fort::char_table& table, std::string name, std::string area, std::string type);
+    void DisplayAllBedrooms();
+    void DisplayBedroomsUpTo(float maxPrice);
+    void DisplayFreeBedroomsAt(std::tm start, std::tm end);
+    void DisplayFreeConferanceRoomsAt(std::tm start, std::tm end);
+    void DisplayBedroomInfo(fort::char_table& table, std::string name, std::string area, std::string bedsAmount, std::string price, std::string reservationsAmount);
+    void DisplayConferanceRoomInfo(fort::char_table& table, std::string name, std::string area, std::string chairsAmount, std::string price, std::string reservationsAmount);
 };
 
 #endif

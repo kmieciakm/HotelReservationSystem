@@ -3,6 +3,7 @@
 #include "stdexcept"
 #include "functions.h"
 #include <fstream>
+#include <iostream>
 
 DatabaseSystem::DatabaseSystem(std::shared_ptr<Hotel> _hotel, std::string _path)
 : hotel(_hotel), databaseFilename(_path) {}

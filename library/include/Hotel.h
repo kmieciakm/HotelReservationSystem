@@ -36,6 +36,7 @@ public:
     int GetConferanceRoomsAmount();
     int GetBedroomsAmount();
     int GetStoreroomsAmount();
+    std::vector<std::shared_ptr<Reservation>> GetAllReservations();
 };
 
 #endif

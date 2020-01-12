@@ -78,3 +78,18 @@ std::vector<std::shared_ptr<ConferanceRoom>> Hotel::GetConferanceRooms(){
 int Hotel::GetConferanceRoomsAmount(){
     return this->conferanceRooms.size();
 }
+
+std::vector<std::shared_ptr<Reservation>> Hotel::GetAllReservations(){
+    std::vector<std::shared_ptr<Reservation>> allReservations; 
+    for(std::shared_ptr<ConferanceRoom> cRoom : this->conferanceRooms){
+        for(std::shared_ptr<Reservation> reservation : cRoom->GetReservations()){
+            allReservations.push_back(reservation);
+        }
+    }
+    for(std::shared_ptr<Bedroom> bRoom : this->bedrooms){
+        for(std::shared_ptr<Reservation> reservation : bRoom->GetReservations()){
+            allReservations.push_back(reservation);
+        }
+    }
+    return allReservations;
+}

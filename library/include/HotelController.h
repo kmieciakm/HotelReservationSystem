@@ -21,7 +21,14 @@ public:
     HotelController(std::shared_ptr<Hotel> _hotel, std::shared_ptr<DatabaseSystem> _db);
     ~HotelController() = default;
     void SetView(std::shared_ptr<HotelView> view);
+    std::string GetTitle();
     void GetAllReservationsInfo(fort::char_table& table);
+    void GetOverdueReservationsInfo(fort::char_table& table);
+    void GetAllRooms(fort::char_table& table);
+    void GetAllBedrooms(fort::char_table& table);
+    void GetBedroomsUpTo(fort::char_table& table, float maxPrice);
+    void GetFreeBedroomsAt(fort::char_table& table, std::tm start, std::tm end);
+    void GetFreeConferanceRoomsAt(fort::char_table& table, std::tm start, std::tm end);
 };
 
 #endif
