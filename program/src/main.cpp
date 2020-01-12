@@ -23,9 +23,9 @@ int main() {
     grandHotel->AddConferanceRoom(conferanceRoom2);
     grandHotel->AddStoreroom(storeroom);
     std::tm arrivalDate = {0 ,0 ,10, 5, 3, 120};
-    bedroom->Reserve(arrivalDate, 5);
+    bedroom->Reserve(arrivalDate, 5, 1);
     std::tm meetingDate = {0 ,0 ,12, 5, 3, 120};
-    conferanceRoom2->Reserve(meetingDate, 4);
+    conferanceRoom2->Reserve(meetingDate, 4, 2);
     db.UpdateDatabase();
 
     DatabaseSystem dbHilton("hotelDatabase.json");

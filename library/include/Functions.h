@@ -4,5 +4,6 @@
 #include <chrono>
 
 std::tm GetIncreasedDate(std::tm date, int hours, int days);
+std::tm GetCurrentTime();
 
 #endif

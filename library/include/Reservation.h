@@ -9,10 +9,12 @@ private:
     std::tm checkinDate;
     std::tm checkoutDate;
     std::shared_ptr<Payment> payment;
+    std::string reservationId;
 public:
-    Reservation(std::tm _checkin, std::tm _checkout, float _price);
-    Reservation(std::tm _checkin, std::tm _checkout, float _price, std::tm _deadline);
+    Reservation(std::tm _checkin, std::tm _checkout, float _price, std::string _reservationId);
+    Reservation(std::tm _checkin, std::tm _checkout, float _price, std::tm _deadline, std::string _reservationId);
     ~Reservation() = default;
+    std::string GetReservationId();
     std::tm GetCheckinDate();
     std::tm GetCheckoutDate();
     void SetCheckoutDate(std::tm newCheckoutDate);

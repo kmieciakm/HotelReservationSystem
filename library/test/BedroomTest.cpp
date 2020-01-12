@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(Bedroom_ReservingRoom_NewReservationInVariable) {
     Bedroom bedroom("BlackAndWhite", 40, 20, 2);
     std::tm arrival = {0, 0, 10, 10, 1, 400};
     int days = 2;
-    bedroom.Reserve(arrival, days);
+    bedroom.Reserve(arrival, days, 12);
     BOOST_CHECK(true);
 }
 
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(Bedroom_CheckFreeTerm_RetrunTrue) {
 BOOST_AUTO_TEST_CASE(Bedroom_CheckReservedTerm_RetrunFalse) {
     Bedroom bedroom("BlackAndWhite", 50, 30, 3);
     std::tm arrival = {0, 0, 10, 10, 0, 400};
-    bedroom.Reserve(arrival, 4);
+    bedroom.Reserve(arrival, 4, 12);
     std::tm start = {0, 0, 10, 8, 0, 400};
     std::tm end = {0, 0, 10, 11, 0, 400};
     BOOST_REQUIRE_EQUAL(bedroom.IsFreeInTerm(start, end), false);
@@ -62,15 +62,15 @@ BOOST_AUTO_TEST_CASE(Bedroom_CheckReservedTerm_RetrunFalse) {
 BOOST_AUTO_TEST_CASE(Bedroom_TryReservedAlreadyReservedTerm_ThrowException) {
     Bedroom bedroom("BlackAndWhite", 50, 30, 3);
     std::tm arrival = {0, 0, 10, 10, 0, 400};
-    bedroom.Reserve(arrival, 4);
+    bedroom.Reserve(arrival, 4, 12);
     std::tm start = {0, 0, 10, 8, 0, 400};
-    BOOST_REQUIRE_THROW(bedroom.Reserve(start, 5), std::logic_error);
+    BOOST_REQUIRE_THROW(bedroom.Reserve(start, 5, 14), std::logic_error);
 }
 
 BOOST_AUTO_TEST_CASE(Bedroom_TryReservedTooManyDays_ThrowException) {
     Bedroom bedroom("BlackAndWhite", 50, 30, 3);
     std::tm arrival = {0, 0, 10, 10, 0, 400};
-    BOOST_REQUIRE_THROW(bedroom.Reserve(arrival, MAX_RESERVATION_DAYS + 5), std::logic_error);
+    BOOST_REQUIRE_THROW(bedroom.Reserve(arrival, MAX_RESERVATION_DAYS + 5, 12), std::logic_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

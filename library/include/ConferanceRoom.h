@@ -13,7 +13,7 @@ public:
     ~ConferanceRoom() = default;
     int GetChairsAmount();
     void SetChairsAmount(int newChairsAmount);
-    virtual void Reserve(std::tm checkInDate, int period) override;
+    virtual void Reserve(std::tm checkInDate, int period, int number) override;
 };
 
 #endif

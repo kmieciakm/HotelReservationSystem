@@ -8,3 +8,9 @@ std::tm GetIncreasedDate(std::tm date, int hours, int days){
     std::tm newDate = *localtime(&dateTime);
     return newDate;
 }
+
+std::tm GetCurrentTime(){
+    std::time_t t = std::time(0);
+    std::tm currentTime = *std::localtime(&t);
+    return currentTime;
+}

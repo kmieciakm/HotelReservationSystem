@@ -13,7 +13,7 @@ public:
     ~Bedroom() = default;
     int GetBedsAmount();
     void SetBedsAmount(int newBedsAmount);
-    virtual void Reserve(std::tm checkInDate, int period) final;
+    virtual void Reserve(std::tm checkInDate, int period, int number) final;
 };
 
 #endif

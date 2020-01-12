@@ -1,6 +1,7 @@
 #include "DatabaseSystem.h"
 #include "json.hpp"
 #include "stdexcept"
+#include "functions.h"
 #include <fstream>
 
 DatabaseSystem::DatabaseSystem(std::shared_ptr<Hotel> _hotel, std::string _path)
@@ -10,7 +11,8 @@ DatabaseSystem::DatabaseSystem(std::string _path)
 : hotel(nullptr), databaseFilename(_path) {}
 
 std::shared_ptr<Hotel> DatabaseSystem::GetHotelFromDatabase(){
-    Read();
+    UpdateHotel();
+    this->lastUpdate = GetCurrentTime();
     return this->hotel;
 }
 
@@ -18,7 +20,11 @@ void DatabaseSystem::SetPath(std::string newPath){
     this->databaseFilename = newPath;
 }
 
-void DatabaseSystem::Read(){
+std::tm DatabaseSystem::GetLastUpdate(){
+    return this->lastUpdate;
+}
+
+void DatabaseSystem::UpdateHotel(){
     std::fstream databaseFile;
     databaseFile.open("../../data/" + this->databaseFilename, std::fstream::in);
     if( databaseFile.good() == true ){
@@ -94,6 +100,7 @@ nlohmann::json DatabaseSystem::GetSerializedReservations(std::vector<std::shared
         tm deadlineDate = reservation->GetPayment()->GetDeadline();
         newReservation["checkin"] = mktime(&checkinDate);
         newReservation["checkout"] = mktime(&checkoutDate);
+        newReservation["id"] = reservation->GetReservationId();
         newReservation["payment"]["rental"] = reservation->GetPayment()->GetRental();
         newReservation["payment"]["deadline"] = mktime(&deadlineDate);
         parsedReservations.push_back(newReservation);
@@ -112,7 +119,8 @@ std::vector<std::shared_ptr<Reservation>> DatabaseSystem::GetDeserializedReserva
         float rental = reservation["payment"]["rental"];
         time_t deadlineDate = reservation["payment"]["deadline"];
         tm deadlineTime = *localtime(&deadlineDate);
-        newReservation = std::make_shared<Reservation>(checkinTime, checkoutTime, rental, deadlineTime);
+        std::string reservationId = reservation["id"];
+        newReservation = std::make_shared<Reservation>(checkinTime, checkoutTime, rental, deadlineTime, reservationId);
         reservations.push_back(newReservation);
     }
     return reservations;
