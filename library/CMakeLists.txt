@@ -14,6 +14,8 @@ set(SOURCE_FILES
     include/Payment.h
     include/Functions.h
     include/DatabaseSystem.h
+    include/HotelController.h
+    include/HotelView.h
     src/Hotel.cpp
     src/Reservation.cpp
     src/Reservationable.cpp
@@ -24,6 +26,9 @@ set(SOURCE_FILES
     src/Payment.cpp
     src/Functions.cpp
     src/DatabaseSystem.cpp
+    src/HotelController.cpp
+    src/HotelView.cpp
+    include/FortLibrary/fort.c
 )
 
 add_library(Library ${SOURCE_FILES})
