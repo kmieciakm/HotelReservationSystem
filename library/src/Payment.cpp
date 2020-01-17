@@ -33,7 +33,9 @@ bool Payment::HasExpired(){
 }
 
 void Payment::Pay(float sum){
-    if(this->IsPaidUp()){
+    if(sum < 0)
+        throw std::logic_error("Cannot handle negative sum");
+    else if(this->IsPaidUp()){
         throw std::logic_error("Already paid");
     } else if(this->rental - sum >= 0){
         this->rental -= sum;

@@ -17,6 +17,7 @@ public:
     DatabaseSystem(std::string _path);
     ~DatabaseSystem() = default;
     void SetPath(std::string newPath);
+    std::string GetPath();
     std::shared_ptr<Hotel> GetHotelFromDatabase();
     void UpdateDatabase();
     std::tm GetLastUpdate();

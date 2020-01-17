@@ -47,3 +47,22 @@ std::string DateToString(std::tm date){
     dateStr = day + " " + month + " " + year + " " + hour + ":" + min;
     return dateStr;
 }
+
+bool isIntNumber(std::string str){
+    for (int i=0 ; i < str.length(); i++){
+        if(str[0] == '-') continue;
+        if ( !isdigit(str[i]) ) 
+            return false;
+    }
+    return true;
+}
+
+bool isFloatNumber(std::string str){
+    for (int i=0 ; i < str.length(); i++){
+        if(str[0] == '-') continue;
+        if(str[i] == '.') continue;
+        if ( !isdigit(str[i]) ) 
+            return false;
+    }
+    return true;
+}

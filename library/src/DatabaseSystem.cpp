@@ -13,12 +13,15 @@ DatabaseSystem::DatabaseSystem(std::string _path)
 
 std::shared_ptr<Hotel> DatabaseSystem::GetHotelFromDatabase(){
     UpdateHotel();
-    this->lastUpdate = GetCurrentTime();
     return this->hotel;
 }
 
 void DatabaseSystem::SetPath(std::string newPath){
     this->databaseFilename = newPath;
+}
+
+std::string DatabaseSystem::GetPath(){
+    return this->databaseFilename;
 }
 
 std::tm DatabaseSystem::GetLastUpdate(){
@@ -31,6 +34,8 @@ void DatabaseSystem::UpdateHotel(){
     if( databaseFile.good() == true ){
         nlohmann::json db;
         databaseFile >> db;
+        time_t lastUpdate = db["update"];
+        this->lastUpdate = *localtime(&lastUpdate);
         this->hotel = std::make_shared<Hotel>(db["hotel"]["name"], db["hotel"]["stars"]);
         for(auto room : db["hotel"]["bedrooms"]){
             std::shared_ptr<Bedroom> roomObj = std::make_shared<Bedroom>(room["name"], room["area"], room["price"], room["bedsAmount"]);
@@ -56,6 +61,9 @@ void DatabaseSystem::UpdateHotel(){
 
 void DatabaseSystem::UpdateDatabase(){
     nlohmann::json db;
+    this->lastUpdate = GetCurrentTime();
+    tm lastUpdate = GetCurrentTime();
+    db["update"] = mktime(&lastUpdate);
     db["hotel"]["name"] = this->hotel->GetName();
     db["hotel"]["stars"] = this->hotel->GetStarsAmount();
     for(auto bedroom : this->hotel->GetBedrooms()){
@@ -90,6 +98,7 @@ void DatabaseSystem::UpdateDatabase(){
     databaseFile.open("../../data/" + this->databaseFilename, std::fstream::out);
     databaseFile << db << std::endl;
     databaseFile.close();
+    this->lastUpdate = GetCurrentTime();
 }
 
 nlohmann::json DatabaseSystem::GetSerializedReservations(std::vector<std::shared_ptr<Reservation>> reservations){

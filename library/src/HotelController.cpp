@@ -14,7 +14,13 @@ std::string HotelController::GetTitle(){
     hotelTitle = this->hotel->GetName() + " ";
     for(int i=0; i<this->hotel->GetStarsAmount(); i++)
         hotelTitle += "*";
-   return hotelTitle;
+    return hotelTitle;
+}
+
+std::string HotelController::GetDatabaseInfo(){
+    std::string info;
+    info = this->databaseSystem->GetPath() + "\nLast update: " + DateToString(this->databaseSystem->GetLastUpdate());
+    return info;
 }
 
 void HotelController::GetAllReservationsInfo(fort::char_table& table){
@@ -133,4 +139,25 @@ void HotelController::GetFreeConferanceRoomsAt(fort::char_table& table, std::tm 
             );
         }
     }
+}
+
+void HotelController::HandlePayment(fort::char_table& table, std::string reservationId, float sum){
+    bool reservationFound = false;
+    for(auto reservation : this->hotel->GetAllReservations()){
+        if(reservation->GetReservationId() == reservationId){
+            reservation->GetPayment()->Pay(sum);
+            this->hotelView->DisplayReservationInfo(
+                table,
+                reservation->GetReservationId(),
+                DateToString(reservation->GetCheckinDate()),
+                DateToString(reservation->GetCheckoutDate()),
+                std::to_string(reservation->GetPayment()->GetRental()),
+                DateToString(reservation->GetPayment()->GetDeadline())
+            );
+            this->databaseSystem->UpdateDatabase();
+            reservationFound = true;
+        }
+    }
+    if(!reservationFound)
+        throw std::logic_error("Reservation " + reservationId + " not found");
 }
