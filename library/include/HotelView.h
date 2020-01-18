@@ -28,12 +28,16 @@ public:
     void DisplayAllRooms();
     void DisplayRoomInfo(fort::char_table& table, std::string name, std::string area, std::string type);
     void DisplayAllBedrooms();
+    void DisplayAllConferanceRooms();
     void DisplayBedroomsUpTo(float maxPrice);
     void DisplayFreeBedroomsAt(std::tm start, std::tm end);
     void DisplayFreeConferanceRoomsAt(std::tm start, std::tm end);
     void DisplayBedroomInfo(fort::char_table& table, std::string name, std::string area, std::string bedsAmount, std::string price, std::string reservationsAmount);
     void DisplayConferanceRoomInfo(fort::char_table& table, std::string name, std::string area, std::string chairsAmount, std::string price, std::string reservationsAmount);
-    void DisplayPaymentMenu();
+    void DisplayPaymentEvent();
+    void DisplayBedroomReservationEvent();
+    void DisplayConferanceRoomReservationEvent();
+    void DisplayReservationMenu();
     void ClearScreen();
     void MainMenu();
 };

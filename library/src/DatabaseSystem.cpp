@@ -62,7 +62,7 @@ void DatabaseSystem::UpdateHotel(){
 void DatabaseSystem::UpdateDatabase(){
     nlohmann::json db;
     this->lastUpdate = GetCurrentTime();
-    tm lastUpdate = GetCurrentTime();
+    std::tm lastUpdate = GetCurrentTime();
     db["update"] = mktime(&lastUpdate);
     db["hotel"]["name"] = this->hotel->GetName();
     db["hotel"]["stars"] = this->hotel->GetStarsAmount();
@@ -105,9 +105,9 @@ nlohmann::json DatabaseSystem::GetSerializedReservations(std::vector<std::shared
     nlohmann::json newReservation;
     nlohmann::json parsedReservations;
     for(auto reservation : reservations){
-        tm checkinDate = reservation->GetCheckinDate();
-        tm checkoutDate = reservation->GetCheckoutDate();
-        tm deadlineDate = reservation->GetPayment()->GetDeadline();
+        std::tm checkinDate = reservation->GetCheckinDate();
+        std::tm checkoutDate = reservation->GetCheckoutDate();
+        std::tm deadlineDate = reservation->GetPayment()->GetDeadline();
         newReservation["checkin"] = mktime(&checkinDate);
         newReservation["checkout"] = mktime(&checkoutDate);
         newReservation["id"] = reservation->GetReservationId();
@@ -123,12 +123,12 @@ std::vector<std::shared_ptr<Reservation>> DatabaseSystem::GetDeserializedReserva
     std::vector<std::shared_ptr<Reservation>> reservations;
     for(auto reservation : reservationsJson){
         time_t checkinDate = reservation["checkin"];
-        tm checkinTime = *localtime(&checkinDate);
+        std::tm checkinTime = *localtime(&checkinDate);
         time_t checkoutDate = reservation["checkout"];
-        tm checkoutTime = *localtime(&checkoutDate);
+        std::tm checkoutTime = *localtime(&checkoutDate);
         float rental = reservation["payment"]["rental"];
         time_t deadlineDate = reservation["payment"]["deadline"];
-        tm deadlineTime = *localtime(&deadlineDate);
+        std::tm deadlineTime = *localtime(&deadlineDate);
         std::string reservationId = reservation["id"];
         newReservation = std::make_shared<Reservation>(checkinTime, checkoutTime, rental, deadlineTime, reservationId);
         reservations.push_back(newReservation);

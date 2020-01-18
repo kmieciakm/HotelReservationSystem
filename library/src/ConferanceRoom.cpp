@@ -19,7 +19,8 @@ void ConferanceRoom::SetChairsAmount(int newChairsAmount){
 void ConferanceRoom::Reserve(std::tm checkinDate, int period, int number){
     if(period > MAX_RESERVATION_HOURS)
         throw std::logic_error("Too wide reservation period, you can reserve a conferance room up to " + std::to_string(MAX_RESERVATION_HOURS) + " hours");
-    
+    if(period <= 0)
+        throw std::logic_error("Cannot handle negative hours");
     std::tm checkoutDate = GetIncreasedDate(checkinDate, period, 0);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
         std::string reservationId = "c" + std::to_string(number);

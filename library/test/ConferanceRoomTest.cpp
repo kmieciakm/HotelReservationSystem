@@ -58,4 +58,22 @@ BOOST_AUTO_TEST_CASE(ConferanceRoom_TryReservedTooManyHours_ThrowException) {
     BOOST_REQUIRE_THROW(ConferanceRoom.Reserve(arrival, MAX_RESERVATION_HOURS + 5, 13), std::logic_error);
 }
 
+BOOST_AUTO_TEST_CASE(ConferanceRoom_TryReserveNegativeHours_ThrowException) {
+    ConferanceRoom ConferanceRoom("CorpoOne", 50, 30, 3);
+    std::tm arrival = {0, 0, 10, 10, 0, 400};
+    BOOST_REQUIRE_THROW(ConferanceRoom.Reserve(arrival, -3, 13), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(ConferanceRoom_ReservingRoom_ReservationCheckoutDateCorrect){
+    ConferanceRoom conferanceRoom("CorpoFour", 50, 30, 3);
+    std::tm checkIn = {0, 0, 10, 10, 0, 400};
+    std::tm expectedCheckout = {0, 0, 15, 10, 0, 400};
+    conferanceRoom.Reserve(checkIn, 5, 12);
+    std::tm checkOut = conferanceRoom.GetReservation("c12")->GetCheckoutDate();
+    BOOST_REQUIRE_EQUAL(checkOut.tm_hour, expectedCheckout.tm_hour);
+    BOOST_REQUIRE_EQUAL(checkOut.tm_mday, expectedCheckout.tm_mday);
+    BOOST_REQUIRE_EQUAL(checkOut.tm_mon, expectedCheckout.tm_mon);
+    BOOST_REQUIRE_EQUAL(checkOut.tm_year, expectedCheckout.tm_year);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

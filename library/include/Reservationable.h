@@ -17,7 +17,7 @@ public:
     float GetPrice();
     void SetPrice(float newPrice);
     void SetReservations(std::vector<std::shared_ptr<Reservation>> reservations);
-    std::shared_ptr<Reservation> GetReservation(int id);
+    std::shared_ptr<Reservation> GetReservation(std::string id);
     std::vector<std::shared_ptr<Reservation>> GetReservations();
     int GetReservationsAmount();
     virtual void Reserve(std::tm checkInDate, int period, int number) = 0;

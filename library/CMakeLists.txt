@@ -75,6 +75,7 @@ set(SOURCE_TEST_FILES
         test/PaymentTest.cpp
         test/StoreroomTest.cpp
         test/RoomTest.cpp
+        test/FunctionsTest.cpp
         )
 
 include_directories(

@@ -37,10 +37,12 @@ bool Reservationable::IsFreeInTerm(std::tm start, std::tm end){
     return true;
 }
 
-std::shared_ptr<Reservation> Reservationable::GetReservation(int id){
-    if(id >= this->reservations.size() || id < 0)
-        throw std::out_of_range("Bad reservation id");
-    return this->reservations.at(id);
+std::shared_ptr<Reservation> Reservationable::GetReservation(std::string id){
+    for(auto reservation : this->GetReservations()){
+        if(reservation->GetReservationId() == id)
+            return reservation;
+    }
+    throw std::logic_error("Reservation " + id + " not found");
 };
 
 std::vector<std::shared_ptr<Reservation>> Reservationable::GetReservations(){

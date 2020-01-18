@@ -19,7 +19,8 @@ void Bedroom::SetBedsAmount(int newBedsAmount){
 void Bedroom::Reserve(std::tm checkinDate, int period, int number){
     if(period > MAX_RESERVATION_DAYS)
         throw std::logic_error("Too wide reservation period, you can reserve a room up to " + std::to_string(MAX_RESERVATION_DAYS) + " days");
-
+    if(period <= 0)
+        throw std::logic_error("Cannot handle negative days");
     std::tm checkoutDate = GetIncreasedDate(checkinDate, 0, period);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
         std::string reservationId = "b" + std::to_string(number);

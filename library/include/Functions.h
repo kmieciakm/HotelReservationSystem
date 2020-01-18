@@ -10,5 +10,7 @@ std::tm GetCurrentTime();
 std::string DateToString(std::tm date);
 bool isIntNumber(std::string str);
 bool isFloatNumber(std::string str);
+std::tm StrToDate(std::string str);
+bool isExitString(std::string str);
 
 #endif
