@@ -76,4 +76,10 @@ BOOST_AUTO_TEST_CASE(ConferanceRoom_ReservingRoom_ReservationCheckoutDateCorrect
     BOOST_REQUIRE_EQUAL(checkOut.tm_year, expectedCheckout.tm_year);
 }
 
+BOOST_AUTO_TEST_CASE(ConferanceRoom_TryReserveRoomInThePast_ThrowError){
+    ConferanceRoom conferanceRoom("CorpoCorpo", 50, 30, 30);
+    std::tm checkIn = {0, 0, 10, 10, 0, 100};
+    BOOST_REQUIRE_THROW(conferanceRoom.Reserve(checkIn, 5, 12), std::logic_error);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

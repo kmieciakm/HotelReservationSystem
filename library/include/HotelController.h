@@ -29,11 +29,14 @@ public:
     void GetAllRooms(fort::char_table& table);
     void GetAllBedrooms(fort::char_table& table);
     void GetAllConferanceRooms(fort::char_table& table);
+    void GetAllStorerooms(fort::char_table& table);
     void GetBedroomsUpTo(fort::char_table& table, float maxPrice);
     void GetFreeBedroomsAt(fort::char_table& table, std::tm start, std::tm end);
     void GetFreeConferanceRoomsAt(fort::char_table& table, std::tm start, std::tm end);
     void HandlePayment(fort::char_table& table, std::string reservationId, float sum);
     void HandleReservation(fort::char_table& table, std::string roomName, tm start, int period);
+    void HandleLoad(fort::char_table& table, std::string roomName, float amount);
+    void HandleUnload(fort::char_table& table, std::string roomName, float amount);
 };
 
 #endif

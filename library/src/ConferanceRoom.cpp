@@ -21,6 +21,9 @@ void ConferanceRoom::Reserve(std::tm checkinDate, int period, int number){
         throw std::logic_error("Too wide reservation period, you can reserve a conferance room up to " + std::to_string(MAX_RESERVATION_HOURS) + " hours");
     if(period <= 0)
         throw std::logic_error("Cannot handle negative hours");
+    if( IsFirstDateEarlier( checkinDate, GetCurrentTime() ) )
+        throw std::logic_error("Reservation not possible in this term, please insert proper date"); 
+
     std::tm checkoutDate = GetIncreasedDate(checkinDate, period, 0);
     if(this->IsFreeInTerm(checkinDate, checkoutDate)){
         std::string reservationId = "c" + std::to_string(number);

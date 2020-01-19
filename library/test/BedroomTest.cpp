@@ -91,4 +91,10 @@ BOOST_AUTO_TEST_CASE(Bedroom_ReservingRoom_ReservationCheckoutDateCorrect){
     BOOST_REQUIRE_EQUAL(checkOut.tm_year, expectedCheckout.tm_year);
 }
 
+BOOST_AUTO_TEST_CASE(Bedroom_TryReserveRoomInThePast_ThrowError){
+    Bedroom bedroom("BlackAndWhite", 50, 30, 3);
+    std::tm checkIn = {0, 0, 10, 10, 0, 100};
+    BOOST_REQUIRE_THROW(bedroom.Reserve(checkIn, 5, 12), std::logic_error);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

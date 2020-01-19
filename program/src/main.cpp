@@ -30,12 +30,6 @@ int main() {
     }catch(const std::exception& error){
         std::cout << error.what();
     }
-    
-    // hotelView->DisplayBedroomsUpTo(100.00);
-    // std::tm start = {0 ,0 ,10, 5, 3, 120};
-    // std::tm end = {0 ,0 ,10, 7, 3, 120};
-    // hotelView->DisplayFreeBedroomsAt(start, end);
-    // hotelView->DisplayFreeConferanceRoomsAt(start, end);
-    // hotelView->DisplayErrorMessage("Everything is all right");
+
     return 0;
 }

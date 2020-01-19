@@ -122,6 +122,18 @@ void HotelController::GetAllConferanceRooms(fort::char_table& table){
     }
 }
 
+void HotelController::GetAllStorerooms(fort::char_table& table){
+    for(std::shared_ptr<Storeroom> storeroom : this->hotel->GetStorerooms()){
+        this->hotelView->DisplayStoreroomInfo(
+            table,
+            storeroom->GetName(),
+            std::to_string(storeroom->GetArea()),
+            std::to_string(storeroom->GetCapacity()),
+            std::to_string(storeroom->GetOccupied()) 
+        );
+    }
+}
+
 void HotelController::GetBedroomsUpTo(fort::char_table& table, float maxPrice){
     for(std::shared_ptr<Bedroom> bedroom : this->hotel->GetBedrooms()){
         if( bedroom->GetPrice() <= maxPrice){
@@ -218,6 +230,58 @@ void HotelController::HandleReservation(fort::char_table& table, std::string roo
                 DateToString(reservation->GetCheckoutDate()),
                 std::to_string(reservation->GetPayment()->GetRental()),
                 DateToString(reservation->GetPayment()->GetDeadline())
+            );
+    }else{
+        throw std::logic_error("Room " + roomName + " not found");
+    }
+}
+
+void HotelController::HandleLoad(fort::char_table& table, std::string roomName, float amount){
+    bool roomFound = false;
+    std::shared_ptr<Storeroom> storeroom;
+    std::shared_ptr<Reservation> reservation;
+    for(auto room : this->hotel->GetStorerooms()){
+        if(room->GetName() == roomName){
+            room->Load(amount);
+            storeroom = room;
+            roomFound = true;
+        }
+    }
+
+    if(roomFound){
+        this->databaseSystem->UpdateDatabase();
+        this->hotelView->DisplayStoreroomInfo(
+                table,
+                storeroom->GetName(),
+                std::to_string(storeroom->GetArea()),
+                std::to_string(storeroom->GetCapacity()),
+                std::to_string(storeroom->GetOccupied())
+            );
+    }else{
+        throw std::logic_error("Room " + roomName + " not found");
+    }
+}
+
+void HotelController::HandleUnload(fort::char_table& table, std::string roomName, float amount){
+    bool roomFound = false;
+    std::shared_ptr<Storeroom> storeroom;
+    std::shared_ptr<Reservation> reservation;
+    for(auto room : this->hotel->GetStorerooms()){
+        if(room->GetName() == roomName){
+            room->Unload(amount);
+            storeroom = room;
+            roomFound = true;
+        }
+    }
+
+    if(roomFound){
+        this->databaseSystem->UpdateDatabase();
+        this->hotelView->DisplayStoreroomInfo(
+                table,
+                storeroom->GetName(),
+                std::to_string(storeroom->GetArea()),
+                std::to_string(storeroom->GetCapacity()),
+                std::to_string(storeroom->GetOccupied())
             );
     }else{
         throw std::logic_error("Room " + roomName + " not found");

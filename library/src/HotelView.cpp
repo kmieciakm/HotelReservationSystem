@@ -1,5 +1,6 @@
 #include "HotelView.h"
 #include <iostream>
+#include <conio.h>
 #include "Functions.h"
 
 void HotelView::SetController(std::shared_ptr<HotelController> controller){
@@ -88,6 +89,18 @@ void HotelView::DisplayAllBedrooms(){
     std::cout << table.to_string() << std::endl;
 }
 
+void HotelView::DisplayAllStorerooms(){
+    fort::char_table table;
+    table.set_border_style(FT_SOLID_STYLE);
+
+    table << fort::header
+        << "Room name" << "Area" << "Capacity" << "Occupied" << fort::endr;
+    if(auto c = this->hotelController.lock())
+        c->GetAllStorerooms(table);
+
+    std::cout << table.to_string() << std::endl;
+}
+
 void HotelView::DisplayAllConferanceRooms(){
     fort::char_table table;
     table.set_border_style(FT_SOLID_STYLE);
@@ -152,6 +165,10 @@ void HotelView::DisplayRoomInfo(fort::char_table& table, std::string name, std::
     table << name << std::stof(area) << type << fort::endr;
 }
 
+void HotelView::DisplayStoreroomInfo(fort::char_table& table, std::string name, std::string area, std::string capacity, std::string occupied){
+    table << name << std::stof(area) << std::stof(capacity) << std::stof(occupied) << fort::endr;
+}
+
 void HotelView::DisplayPaymentEvent(){
     std::string choosedReservation, insertedSum;
 
@@ -167,18 +184,19 @@ void HotelView::DisplayPaymentEvent(){
             
             std::cout << "Choose reservation to pay: [empty to return] ";
             std::cin.sync();
-            std::getline(std::cin, choosedReservation);
+            getline(std::cin, choosedReservation);
             if( isExitString(choosedReservation) ){
                 break;
             }
             std::cout << "Pass sum: ";
             std::cin.sync();
-            std::getline(std::cin, insertedSum);
+            getline(std::cin, insertedSum);
             if(!isFloatNumber(insertedSum))
                 throw std::logic_error("Passed sum not valid");
 
             if(auto c = this->hotelController.lock())
                 c->HandlePayment(table, choosedReservation, std::stof(insertedSum));
+            std::cout << std::endl << "\033[1;32m" << "Payment succeeded" << "\033[0m\n";
             std::cout << std::endl << table.to_string() << std::endl;
             break;
         }catch(const std::exception& error){
@@ -229,6 +247,7 @@ void HotelView::DisplayBedroomReservationEvent(){
 
             if(auto c = this->hotelController.lock())
                 c->HandleReservation(table, roomId, checkInDate, std::stoi(period));
+            std::cout << std::endl << "\033[1;32m" << "Reservation succeeded" << "\033[0m\n";
             std::cout << std::endl << table.to_string() << std::endl;
             break;
         }catch(const std::exception& error){
@@ -286,11 +305,82 @@ void HotelView::DisplayConferanceRoomReservationEvent(){
 
             if(auto c = this->hotelController.lock())
                 c->HandleReservation(table, roomId, checkInDate, std::stoi(period));
+            std::cout << std::endl << "\033[1;32m" << "Reservation succeeded" << "\033[0m\n";
             std::cout << std::endl << table.to_string() << std::endl;
             break;
         }catch(const std::exception& error){
             this->ClearScreen();
             std::cout << "\033[1;31m" << error.what() << "\033[0m\n" << std::endl << std::endl;
+        }
+    }
+}
+
+void HotelView::DisplayLoadEvent(){
+    bool loadNotValid = true;
+    std::string roomId, insertedAmount;
+
+    fort::char_table table;
+    table.set_border_style(FT_SOLID_STYLE);
+    table << fort::header
+        << "Room name" << "Area" << "Capacity" << "Occupied" << fort::endr;
+    
+    while( loadNotValid ){
+        try{
+            std::cout << std::endl << "Load" << std::endl << "Room name (empty - return): ";
+            std::cin.sync();
+            getline(std::cin, roomId);
+            if( isExitString(roomId) ){
+                loadNotValid = false;
+                continue;
+            }
+            std::cout << "Amount: ";
+            std::cin.sync();
+            getline(std::cin, insertedAmount);
+            if(!isFloatNumber(insertedAmount))
+                throw std::logic_error("Passed value not valid");
+
+            if(auto c = this->hotelController.lock())
+                c->HandleLoad(table, roomId, std::stof(insertedAmount));
+            std::cout << std::endl << "\033[1;32m" << "Loaded successfully" << "\033[0m\n";
+            std::cout << std::endl << table.to_string() << std::endl;
+            loadNotValid = false;
+        }catch(const std::exception& error){
+            std::cout << std::endl << "\033[1;31m" << error.what() << "\033[0m\n";
+        }
+    }
+}
+
+void HotelView::DisplayUnloadEvent(){
+    bool unloadNotValid = true;
+    std::string roomId, insertedAmount;
+
+    fort::char_table table;
+    table.set_border_style(FT_SOLID_STYLE);
+    table << fort::header
+        << "Room name" << "Area" << "Capacity" << "Occupied" << fort::endr;
+    
+    while( unloadNotValid ){
+        try{
+            std::cout << std::endl << "Unload" << std::endl << "Room name (empty - return): ";
+            std::cin.sync();
+            getline(std::cin, roomId);
+            if( isExitString(roomId) ){
+                unloadNotValid = false;
+                continue;
+            }
+            std::cout << "Amount: ";
+            std::cin.sync();
+            getline(std::cin, insertedAmount);
+            if(!isFloatNumber(insertedAmount))
+                throw std::logic_error("Passed value not valid");
+
+            if(auto c = this->hotelController.lock())
+                c->HandleUnload(table, roomId, std::stof(insertedAmount));
+            std::cout << std::endl << "\033[1;32m" << "Unloaded successfully" << "\033[0m\n";
+            std::cout << std::endl << table.to_string() << std::endl;
+            unloadNotValid = false;
+        }catch(const std::exception& error){
+            std::cout << std::endl << "\033[1;31m" << error.what() << "\033[0m\n";
         }
     }
 }
@@ -321,13 +411,50 @@ void HotelView::DisplayReservationMenu(){
     }
 }
 
+void HotelView::DisplayStoreroomsMenu(){
+    this->ClearScreen(); 
+    char key;
+    bool displayMenu = true;
+    std::string keyStr;
+    fort::char_table tableMenuOptions;
+    tableMenuOptions.set_border_style(FT_SOLID_STYLE);
+    tableMenuOptions << fort::header 
+        << "Key" << "Option" << fort::endr
+        << "1"   << "Load" << fort::endr 
+        << "2"   << "Unload" << fort::endr << fort::separator 
+        << "ESC" << "Exit" << fort::endr;
+    tableMenuOptions.column(0).set_cell_text_align(fort::text_align::center);
+
+    while( displayMenu ){
+        this->ClearScreen();
+        std::cout << "Manage Storerooms" << std::endl << std::endl;
+        this->DisplayAllStorerooms();
+        std::cout << tableMenuOptions.to_string() << std::endl << std::endl;
+
+        std::cout << "Option: ";
+        std::cin.sync();
+        std::cin.get(key);
+        if( isExitString(keyStr = key) ){
+            displayMenu = false;
+            continue;
+        }
+        switch(key){
+            case '1': 
+                this->DisplayLoadEvent(); displayMenu = false; break;
+            case '2': 
+                this->DisplayUnloadEvent(); displayMenu = false; break;
+            default: continue;
+        }
+    }
+}
+
 void HotelView::ClearScreen(){
     system("clear");
 }
 
 void HotelView::MainMenu(){
     char key;
-    while(key != 27){
+    do{
         this->ClearScreen();
         this->DisplayTitle();
         this->DisplayDatabaseInfo();
@@ -343,6 +470,7 @@ void HotelView::MainMenu(){
             << "5"   << "Display All Reservations" << fort::endr 
             << "6"   << "Display Overdue Reservations" << fort::endr 
             << "7"   << "Pay for reservation" << fort::endr << fort::separator
+            << "8"   << "Manage Storerooms" << fort::endr << fort::separator
             << "ESC" << "Exit" << fort::endr;
         table.column(0).set_cell_text_align(fort::text_align::center);
         std::cout << table.to_string() << std::endl << std::endl;
@@ -367,6 +495,8 @@ void HotelView::MainMenu(){
                 this->DisplayOverdueReservations(); break;
             case '7':
                 this->DisplayPaymentEvent(); break;
+            case '8':
+                this->DisplayStoreroomsMenu(); break;
             default: continue;
         }
 
@@ -375,5 +505,5 @@ void HotelView::MainMenu(){
             std::cin.sync();
             getchar();
         }
-    }
+    }while(key != 27);
 }
