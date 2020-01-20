@@ -1,4 +1,5 @@
 #include "Reservationable.h"
+#include "Functions.h"
 #include <stdexcept>
 
 Reservationable::Reservationable(std::string _name, float _area, float _price)
@@ -20,14 +21,14 @@ void Reservationable::SetReservations(std::vector<std::shared_ptr<Reservation>> 
 }
 
 bool Reservationable::IsFreeInTerm(std::tm start, std::tm end){
-    time_t startTime = mktime(&start);
-    time_t endTime = mktime(&end);
+    std::time_t startTime = mkgmtime(&start);
+    std::time_t endTime = mkgmtime(&end);
 
     for(auto reservation : this->reservations){
         std::tm checkinDate = reservation->GetCheckinDate();
         std::tm checkoutDate = reservation->GetCheckoutDate();
-        time_t reservationBegining = mktime(&checkinDate);
-        time_t reservationEnd = mktime(&checkoutDate);
+        std::time_t reservationBegining = mkgmtime(&checkinDate);
+        std::time_t reservationEnd = mkgmtime(&checkoutDate);
         
         if( (startTime < reservationBegining && endTime > reservationBegining)
             || (startTime >= reservationBegining && startTime <= reservationEnd) ){

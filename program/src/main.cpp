@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <time.h>
 #include "Hotel.h"
 #include "Bedroom.h"
 #include "Functions.h"

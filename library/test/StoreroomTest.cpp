@@ -56,8 +56,19 @@ BOOST_AUTO_TEST_CASE(Room_TryLoadNegative_ThrowException) {
 
 BOOST_AUTO_TEST_CASE(Room_TryUnloadNegative_ThrowException) {
     Storeroom storeroom("StoreroomOne", 100, 200.0);
-    storeroom.Load(150.00); 
+    storeroom.Load(150.00);
     BOOST_REQUIRE_THROW(storeroom.Unload(-100.0), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(Room_TryLoadHalfGram_ThrowException) {
+    Storeroom storeroom("StoreroomOne", 100, 200.0);
+    BOOST_REQUIRE_THROW(storeroom.Load(150.0015), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(Room_TryUnloadHalfGram_ThrowException) {
+    Storeroom storeroom("StoreroomOne", 100, 200.0);
+    storeroom.Load(150.00);
+    BOOST_REQUIRE_THROW(storeroom.Unload(100.0015), std::logic_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

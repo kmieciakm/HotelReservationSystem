@@ -44,6 +44,9 @@ BOOST_AUTO_TEST_CASE(DateToString_PassDate_StringCorrect){
     std::tm date = {0,0,14,1,0,120};
     std::string dateStr = "01 Jan. 2020 14:00";
     BOOST_REQUIRE_EQUAL(DateToString(date), dateStr);
+    date = {0,0,12,5,5,122};
+    dateStr = "05 June 2022 12:00";
+    BOOST_REQUIRE_EQUAL(DateToString(date), dateStr);
 }
 
 BOOST_AUTO_TEST_CASE(GetIncreasedDate_AddedDaysAndHours_DateCorrect){

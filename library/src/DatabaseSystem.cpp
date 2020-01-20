@@ -1,7 +1,7 @@
 #include "DatabaseSystem.h"
 #include "json.hpp"
-#include "stdexcept"
-#include "functions.h"
+#include <stdexcept>
+#include "Functions.h"
 #include <fstream>
 #include <iostream>
 
@@ -34,8 +34,8 @@ void DatabaseSystem::UpdateHotel(){
     if( databaseFile.good() == true ){
         nlohmann::json db;
         databaseFile >> db;
-        time_t lastUpdate = db["update"];
-        this->lastUpdate = *localtime(&lastUpdate);
+        std::time_t lastUpdate = db["update"];
+        this->lastUpdate = *gmtime(&lastUpdate);
         this->hotel = std::make_shared<Hotel>(db["hotel"]["name"], db["hotel"]["stars"]);
         for(auto room : db["hotel"]["bedrooms"]){
             std::shared_ptr<Bedroom> roomObj = std::make_shared<Bedroom>(room["name"], room["area"], room["price"], room["bedsAmount"]);
@@ -63,7 +63,7 @@ void DatabaseSystem::UpdateDatabase(){
     nlohmann::json db;
     this->lastUpdate = GetCurrentTime();
     std::tm lastUpdate = GetCurrentTime();
-    db["update"] = mktime(&lastUpdate);
+    db["update"] = mkgmtime(&lastUpdate);
     db["hotel"]["name"] = this->hotel->GetName();
     db["hotel"]["stars"] = this->hotel->GetStarsAmount();
     for(auto bedroom : this->hotel->GetBedrooms()){
@@ -108,11 +108,11 @@ nlohmann::json DatabaseSystem::GetSerializedReservations(std::vector<std::shared
         std::tm checkinDate = reservation->GetCheckinDate();
         std::tm checkoutDate = reservation->GetCheckoutDate();
         std::tm deadlineDate = reservation->GetPayment()->GetDeadline();
-        newReservation["checkin"] = mktime(&checkinDate);
-        newReservation["checkout"] = mktime(&checkoutDate);
+        newReservation["checkin"] = mkgmtime(&checkinDate);
+        newReservation["checkout"] = mkgmtime(&checkoutDate);
         newReservation["id"] = reservation->GetReservationId();
         newReservation["payment"]["rental"] = reservation->GetPayment()->GetRental();
-        newReservation["payment"]["deadline"] = mktime(&deadlineDate);
+        newReservation["payment"]["deadline"] = mkgmtime(&deadlineDate);
         parsedReservations.push_back(newReservation);
     }
     return parsedReservations;
@@ -122,13 +122,13 @@ std::vector<std::shared_ptr<Reservation>> DatabaseSystem::GetDeserializedReserva
     std::shared_ptr<Reservation> newReservation;
     std::vector<std::shared_ptr<Reservation>> reservations;
     for(auto reservation : reservationsJson){
-        time_t checkinDate = reservation["checkin"];
-        std::tm checkinTime = *localtime(&checkinDate);
-        time_t checkoutDate = reservation["checkout"];
-        std::tm checkoutTime = *localtime(&checkoutDate);
+        std::time_t checkinDate = reservation["checkin"];
+        std::tm checkinTime = *gmtime(&checkinDate);
+        std::time_t checkoutDate = reservation["checkout"];
+        std::tm checkoutTime = *gmtime(&checkoutDate);
         float rental = reservation["payment"]["rental"];
-        time_t deadlineDate = reservation["payment"]["deadline"];
-        std::tm deadlineTime = *localtime(&deadlineDate);
+        std::time_t deadlineDate = reservation["payment"]["deadline"];
+        std::tm deadlineTime = *gmtime(&deadlineDate);
         std::string reservationId = reservation["id"];
         newReservation = std::make_shared<Reservation>(checkinTime, checkoutTime, rental, deadlineTime, reservationId);
         reservations.push_back(newReservation);

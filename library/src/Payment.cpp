@@ -1,4 +1,6 @@
 #include "Payment.h"
+#include "Functions.h"
+#include <math.h>
 #include <stdexcept>
 
 Payment::Payment(float _rental, std::tm _deadline)
@@ -13,8 +15,8 @@ std::tm Payment::GetDeadline(){
 }
 
 void Payment::SetDeadline(std::tm newDeadline){
-    time_t newDeadlineTime = mktime(&newDeadline);
-    time_t deadlineTime = mktime(&this->deadline);
+    std::time_t newDeadlineTime = mkgmtime(&newDeadline);
+    std::time_t deadlineTime = mkgmtime(&this->deadline);
 
     if(newDeadlineTime < deadlineTime)
         throw std::logic_error("Deadline cannot be regress");
@@ -27,17 +29,19 @@ bool Payment::IsPaidUp(){
 }
 
 bool Payment::HasExpired(){
-    time_t currentTime = time(0);
-    time_t deadlineTime = mktime(&this->deadline);
+    std::time_t currentTime = time(0);
+    std::time_t deadlineTime = mkgmtime(&this->deadline);
     return currentTime > deadlineTime;
 }
 
 void Payment::Pay(float sum){
-    if(sum < 0)
+    if(sum < 0){
         throw std::logic_error("Cannot handle negative sum");
-    else if(this->IsPaidUp()){
+    } else if(this->IsPaidUp()){
         throw std::logic_error("Reservation already paid");
-    } else if(this->rental - sum >= 0){
+    } else if (sum - (std::floor(sum*100)/100) > 0){
+        throw std::logic_error("Not valid price");
+    }else if(this->rental - sum >= 0){
         this->rental -= sum;
     } else{
         throw std::logic_error("Too much money");

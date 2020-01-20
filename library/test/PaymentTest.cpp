@@ -68,8 +68,14 @@ BOOST_AUTO_TEST_CASE(Payment_PayAlreadyPaidUp_ThrowException) {
 
 BOOST_AUTO_TEST_CASE(Payment_PayNegativeSum_ThrowException) {
     std::tm deadline = {0, 0, 10, 14, 0, 400};
-    Payment payment(0, deadline);
+    Payment payment(400, deadline);
     BOOST_REQUIRE_THROW(payment.Pay(-100), std::logic_error);
+}
+
+BOOST_AUTO_TEST_CASE(Payment_PayHalfCent_ThrowException) {
+    std::tm deadline = {0, 0, 10, 14, 0, 400};
+    Payment payment(400, deadline);
+    BOOST_REQUIRE_THROW(payment.Pay(100.005), std::logic_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

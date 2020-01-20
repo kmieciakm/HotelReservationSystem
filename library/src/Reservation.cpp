@@ -1,4 +1,5 @@
 #include "Reservation.h"
+#include "Functions.h"
 #include <stdexcept>
 
 Reservation::Reservation(std::tm _checkin, std::tm _checkout, float _price, std::string _reservationId)
@@ -24,9 +25,9 @@ std::string Reservation::GetReservationId(){
 }
 
 void Reservation::SetCheckoutDate(std::tm newCheckoutDate){
-    time_t checkinTime = mktime(&this->checkinDate);
-    time_t checkoutTime = mktime(&this->checkoutDate);
-    time_t newCheckoutTime = mktime(&newCheckoutDate);
+    std::time_t checkinTime = mkgmtime(&this->checkinDate);
+    std::time_t checkoutTime = mkgmtime(&this->checkoutDate);
+    std::time_t newCheckoutTime = mkgmtime(&newCheckoutDate);
 
     if(newCheckoutTime < checkinTime)
         throw std::logic_error("Checkout date not valid, prior then checkin");
@@ -41,7 +42,7 @@ std::shared_ptr<Payment> Reservation::GetPayment(){
 }
 
 bool Reservation::HasPassed(){
-    time_t currentTime = time(0);
-    time_t endTime = mktime(&this->checkoutDate);
+    std::time_t currentTime = time(0);
+    std::time_t endTime = mkgmtime(&this->checkoutDate);
     return currentTime > endTime;
 }

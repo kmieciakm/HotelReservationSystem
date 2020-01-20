@@ -130,7 +130,6 @@ void HotelView::DisplayBedroomsUpTo(float maxPrice){
 void HotelView::DisplayFreeBedroomsAt(std::tm start, std::tm end){
     fort::char_table table;
     table.set_border_style(FT_SOLID_STYLE);
-
     table << fort::header
         << "Room name" << "Area" << "Beds" << "Price(per day)" << "Reservations Amount" << fort::endr;
     if(auto c = this->hotelController.lock())
@@ -148,7 +147,7 @@ void HotelView::DisplayFreeConferanceRoomsAt(std::tm start, std::tm end){
         << "Room name" << "Area" << "Places" << "Price(per day)" << "Reservations Amount" << fort::endr;
     if(auto c = this->hotelController.lock())
         c->GetFreeConferanceRoomsAt(table, start, end);
-
+    
     std::cout << "Conferance rooms free from: " << DateToString(start) << " to " << DateToString(end) << std::endl;
     std::cout << table.to_string() << std::endl;
 }
@@ -191,9 +190,9 @@ void HotelView::DisplayPaymentEvent(){
             std::cout << "Pass sum: ";
             std::cin.sync();
             getline(std::cin, insertedSum);
-            if(!isFloatNumber(insertedSum))
+            if( !isFloatNumber(insertedSum) )
                 throw std::logic_error("Passed sum not valid");
-
+            
             if(auto c = this->hotelController.lock())
                 c->HandlePayment(table, choosedReservation, std::stof(insertedSum));
             std::cout << std::endl << "\033[1;32m" << "Payment succeeded" << "\033[0m\n";
@@ -208,7 +207,7 @@ void HotelView::DisplayPaymentEvent(){
 
 void HotelView::DisplayBedroomReservationEvent(){
     std::string checkInStr, roomId, period;
-    tm checkInDate, checkOutDate;
+    std::tm checkInDate, checkOutDate;
 
     fort::char_table table;
     table.set_border_style(FT_SOLID_STYLE);
@@ -237,7 +236,6 @@ void HotelView::DisplayBedroomReservationEvent(){
 
             std::cout << std::endl;
             this->DisplayFreeBedroomsAt(checkInDate, checkOutDate);
-
             std::cout << "Choose room to reserve: (empty - return) ";
             std::cin.sync();
             getline(std::cin, roomId);
